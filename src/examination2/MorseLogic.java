@@ -132,14 +132,14 @@ public class MorseLogic {
         String englishSentence = "";
         for (int i = 0; i < morseChars.length; i++) {
             String englishChar = morseTranslatedToEnglish.get(morseChars[i]);
-            if (englishChar != null) {
-                englishSentence += englishChar;
-            } else {
-                englishSentence += ""; //Ignorerar null
+            if (englishChar == null) {
+                throw new IllegalArgumentException("Ogiltig morsekod: " + morseChars[i]);
             }
+            englishSentence += englishChar;
         }
         return englishSentence;
     }
+
 
 
     public String englishCharToMorse(String englishInput) {
@@ -178,7 +178,6 @@ public class MorseLogic {
 
 
     public String englishSentenceToMorse(String englishInput) {
-
         //Gör att all input blir stora bokstäver. Spelar ingen roll om små eller stora
         englishInput = englishInput.toUpperCase();
 
@@ -189,6 +188,9 @@ public class MorseLogic {
             String[] englishChars = englishWords[i].split("");
             for (int j = 0; j < englishChars.length; j++) {
                 String morseChar = englishTranslatedToMorse.get(englishChars[j]);
+                if (morseChar == null) {
+                    throw new IllegalArgumentException("Ogiltigt tecken: " + englishChars[j]);
+                }
                 morseSentence += morseChar;
                 if (j < englishChars.length - 1) {
                     morseSentence += " ";
@@ -201,6 +203,7 @@ public class MorseLogic {
 
         return morseSentence;
     }
+
 
 
 
