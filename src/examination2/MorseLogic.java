@@ -86,8 +86,15 @@ public class MorseLogic {
     //METODER
 
     public String morseCharToEnglish(String morseInput) {
-        return morseTranslatedToEnglish.get(morseInput);
+        // Hämtar engelska bokstaven i HashMap:en
+        String englishChar = morseTranslatedToEnglish.get(morseInput);
 
+        // Kollar om tecknet finns, annars returnerar tomt
+        if (englishChar != null) {
+            return englishChar;
+        } else {
+            return ""; // Ignorerar null
+        }
     }
 
 
@@ -95,17 +102,25 @@ public class MorseLogic {
 
 
     public String morseWordToEnglish(String morseWord) {
-        //Bryter ner tecknen i morseChars
-        String[] morseCharsAdded = morseWord.trim().split(" ");
+        //Bryter ner morseordet till separata morse-tecken
+        String[] morseChars = morseWord.trim().split(" ");
 
-        //Gör en tom holder där chars kommer att matas in för att bilda ordet
+        //Holder där chars kommer att matas in för att bilda ordet på engelska
         String englishWord = "";
 
         //Loop som går igenom och adderar alla morseChars och gör om till engelska
-        for (int i = 0; i < morseCharsAdded.length; i++) {
-            String morseChars = morseCharsAdded[i];
-            String englishChar = morseTranslatedToEnglish.get(morseChars);
-            englishWord += englishChar;
+        for (int i = 0; i < morseChars.length; i++) {
+            String morseChar = morseChars[i];
+
+            //Hämtar engelska bokstaven i HashMap:en
+            String englishChar = morseTranslatedToEnglish.get(morseChar);
+
+            //Kollar om tecknet finns, annars sätter "?" (för ogiltiga tecken)
+            if (englishChar != null) {
+                englishWord += englishChar;
+            } else {
+                englishWord += ""; //Ignorerar null
+            }
         }
 
         return englishWord;
@@ -113,30 +128,30 @@ public class MorseLogic {
 
 
     public String morseSentenceToEnglish(String morseInput) {
-
-        //Bryter ner tecknen i morseChars
         String[] morseChars = morseInput.trim().split(" ");
-
-        //Behållare för tecknen som blir meningen
         String englishSentence = "";
-
-        //Loopar igenom tecken för tecken för att bygga ihop i englishSentence och meningen
         for (int i = 0; i < morseChars.length; i++) {
-            String morseChar = morseChars[i];
-            String englishChar = morseTranslatedToEnglish.get(morseChar);
-            englishSentence += englishChar;
+            String englishChar = morseTranslatedToEnglish.get(morseChars[i]);
+            if (englishChar != null) {
+                englishSentence += englishChar;
+            } else {
+                englishSentence += ""; //Ignorerar null
+            }
         }
-
         return englishSentence;
     }
 
 
-    public String englishCharToMorse(String morseInput) {
-        return englishTranslatedToMorse.get(morseInput);
+    public String englishCharToMorse(String englishInput) {
+        englishInput = englishInput.toUpperCase();
+        return englishTranslatedToMorse.get(englishInput);
     }
 
 
     public String englishWordToMorse(String englishInput) {
+
+        //Gör alla bokstäver stora
+        englishInput = englishInput.toUpperCase();
 
         //Delar upp det engelska ordet i bokstäver
         String[] englishCharsAdded = englishInput.trim().split("");
@@ -163,13 +178,17 @@ public class MorseLogic {
 
 
     public String englishSentenceToMorse(String englishInput) {
+
+        //Gör att all input blir stora bokstäver. Spelar ingen roll om små eller stora
+        englishInput = englishInput.toUpperCase();
+
         String[] englishWords = englishInput.trim().split(" ");
         String morseSentence = "";
 
         for (int i = 0; i < englishWords.length; i++) {
             String[] englishChars = englishWords[i].split("");
             for (int j = 0; j < englishChars.length; j++) {
-                String morseChar = englishTranslatedToMorse.get(englishChars[j].toUpperCase());
+                String morseChar = englishTranslatedToMorse.get(englishChars[j]);
                 morseSentence += morseChar;
                 if (j < englishChars.length - 1) {
                     morseSentence += " ";

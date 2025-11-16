@@ -73,12 +73,12 @@ public class MorseTest {
 
         //ARRANGE
         MorseLogic logic = new MorseLogic();
-        String morseInput = "W";
+        String englishInput = "W";
         String expected = ".--";
 
 
         //ACT
-        String actual = logic.englishCharToMorse(morseInput);
+        String actual = logic.englishCharToMorse(englishInput);
 
 
         //ASSERT
@@ -118,6 +118,23 @@ public class MorseTest {
         //ACT
         String actual = logic.englishSentenceToMorse(englishInput);
 
+
+        //ASSERT
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
+
+    public void sentenceFromEnglishToMorseIgnoreDifferentCases() {
+
+        //ARRANGE
+        MorseLogic logic = new MorseLogic();
+        String englishInput = "JavA Is fUn";
+        String expected = ".--- .- ...- .- / .. ... / ..-. ..- -.";
+
+        //ACT
+        String actual = logic.englishSentenceToMorse(englishInput);
 
         //ASSERT
         assertEquals(expected, actual);
